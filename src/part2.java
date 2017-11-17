@@ -125,6 +125,11 @@ public class part2 {
 		DefaultDirectedWeightedGraph<String, DefaultWeightedEdge> residualGraph = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);	
 		DijkstraShortestPath<String, DefaultWeightedEdge> pathFinding = new DijkstraShortestPath<>(directedWeightedGraph);
 		
+		//construct residual graph
+		for(String v: verticesList) {
+			residualGraph.addVertex(v);			
+		}		
+		
 		//compute reduced cost
 		for(DefaultWeightedEdge e: edgeList) {
 			String leftEnd  = directedWeightedGraph.getEdgeSource(e);
@@ -157,15 +162,15 @@ public class part2 {
 					} else if(rightEnd.equals("t")){					
 						matching = matching +" is matched with "+ leftEnd + "\n";
 					}
-					
+					DefaultWeightedEdge pathforward = directedWeightedGraph.getEdge(leftEnd, rightEnd);
 					//Constructing residual graph inside the original graph: begin with remove the forward edge, and add the backward edge
 					directedWeightedGraph.removeEdge(e);
 					
-					DefaultWeightedEdge pathforward = directedWeightedGraph.getEdge(leftEnd, rightEnd);
+					
 					if(!directedWeightedGraph.containsEdge(pathforward)) {					
 						//since the capacity is 1 in this part, if there is a forward path, a backward path will be in the residual graph
-						DefaultWeightedEdge pathbackward = directedWeightedGraph.addEdge(rightEnd, leftEnd);
-						directedWeightedGraph.setEdgeWeight(pathbackward, -1.0*weight);
+						DefaultWeightedEdge pathbackward = residualGraph.addEdge(rightEnd, leftEnd);
+						residualGraph.setEdgeWeight(pathbackward, -1.0*weight);
 //						System.out.println(leftEnd+" <- "+rightEnd + Double.toString(directedWeightedGraph.getEdgeWeight(pathbackward)));
 					}
 					for(String v: verticesList) {
