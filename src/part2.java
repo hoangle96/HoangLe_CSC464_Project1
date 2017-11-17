@@ -131,9 +131,10 @@ public class part2 {
 			String rightEnd = directedWeightedGraph.getEdgeTarget(e);
 			if(!leftEnd.equals("s")&&!rightEnd.equals("t")&&!leftEnd.equals("t")&&!rightEnd.equals("s")) {
 				directedWeightedGraph.setEdgeWeight(e, price.get(leftEnd) + directedWeightedGraph.getEdgeWeight(e) - price.get(rightEnd));
-				System.out.println("Reduced Cost");
-				System.out.println(leftEnd+" "+ rightEnd + " "+ Double.toString(directedWeightedGraph.getEdgeWeight(e)));
+				
 			}
+			System.out.println("Reduced Cost");
+			System.out.println(leftEnd+" "+ rightEnd + " "+ Double.toString(directedWeightedGraph.getEdgeWeight(e)));
 		}
 		
 //		Good till here 11/16 01:02 AM
@@ -167,14 +168,16 @@ public class part2 {
 						directedWeightedGraph.setEdgeWeight(pathbackward, -1.0*weight);
 //						System.out.println(leftEnd+" <- "+rightEnd + Double.toString(directedWeightedGraph.getEdgeWeight(pathbackward)));
 					}
+					for(String v: verticesList) {
+						if(!v.equals("s")&&!v.equals("t")) {
+							double priceV = price.get(v);
+							price.put(v, priceV + weight);
+//							System.out.println(v +" "+ Double.toString(price.get(v)));
+						}		
+					}
+					System.out.println(directedWeightedGraph.toString());
 				}
-				for(String v: verticesList) {
-					if(!v.equals("s")&&!v.equals("t")) {
-						double priceV = price.get(v);
-						price.put(v, priceV + weight);
-//						System.out.println(v +" "+ Double.toString(price.get(v)));
-					}		
-				}
+				
 				weight = 0.0;
 			}
 			
